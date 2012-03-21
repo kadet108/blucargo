@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp
+  spec="1.0+"
+  codebase="http://91.205.74.248/cargo"
+  href="cargo.jnlp">
+  <information>
+    <title>Cargo</title>
+    <vendor>Cargo</vendor>
+    <description>Cargo</description>
+    <description kind="short">Cargo</description>
+    <icon href="http://mycargo.pl/img/baner.png" kind="default"/>
+    <shortcut online="true">
+        <desktop/>
+        <menu submenu="Sparl"/>
+    </shortcut>    
+  </information>
+  <security>
+    <all-permissions/>
+  </security>
+  <resources>
+    <j2se version="1.5+"/>
+    <jar href="lib/activation.jar"/>
+    <jar href="lib/asterisk-im-client.jar"/>
+    <jar href="lib/base.jar"/>
+    <jar href="lib/dom4j.jar"/>
+    <jar href="lib/fmj.jar"/>
+    <jar href="lib/i4jruntime.jar"/>
+    <jar href="lib/jcalendar-1.3.3.jar"/>
+    <jar href="lib/smack.jar"/>
+    <jar href="lib/smackx-debug.jar"/>
+    <jar href="lib/smackx.jar"/>
+    <jar href="lib/spark.jar" />
+    <jar href="lib/startup.jar" main="true"/>
+    <jar href="lib/swingx-core-1.6.2.jar"/>
+    <jar href="lib/syntheticaBlueMoon.jar"/>          
+    <jar href="lib/blucargo_data-1.0-SNAPSHOT.jar"/>     
+    <jar href="lib/synthetica.jar"/>
+    <jar href="lib/systeminfo.jar"/>
+    <jar href="lib/lti-civil.jar"/>
+    <jar href="lib/xpp.jar"/>
+    <jar href="lib/xstream.jar"/>
+    <jar href="lib/xpp3-1.1.3.4.C.jar"/>
+    <jar href="lib/openjpa-all-2.0.0.jar"/>
+    <jar href="lib/log4j.jar"/>
+    
+	
+	
+    <jar href="lib/windows/jdic.jar" />
+    <nativelib href="lib/windows/jdic.jar"></nativelib>
+<!--    <nativelib href="resources/jni-native.jar"></nativelib>   -->
+   </resources>
+  <application-desc main-class="org.jivesoftware.launcher.Startup"/>
+</jnlp>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <table name="cargooffer">
+        <column>addressfrom</column>
+        <column>addressto</column>
+        <column>body</column>
+        <column>cargoprice</column>
+        <column>cargoonpallette</column>
+        <column>cargoondelivery</column>
+        <column>submissiondate</column>
+        <column>cityfrom</column>
+        <column>cityto</column>
+        <column>countryfrom</column>
+        <column>countryto</column>
+        <column>deliveryonday</column>
+        <column>description</column>
+        <column>dimensionofpalettes</column>
+        <column>elevator</column>
+        <column>hds</column>
+        <column>length</column>
+        <column>load</column>
+        <column>loadingdate</column>
+        <column>negotiable</column>
+        <column>loadingdate</column>
+        <column>numberofpalettes</column>
+        <column>offervalid</column>
+        <column>otherdelivery</column>
+        <column>partload</column>
+        <column>postofficefrom</column>
+        <column>postofficeto</column>
+        <column>readytoload</column>
+        <column>stackablepallettes</column>
+        <column>unloadingdate</column>
+        <column>volume</column>
+        <column>weight</column>
+        <column>contact</column>
+        <column>owner</column>		
+        <row>
+			<value description="addressfrom">Opole lokietka 3</value>
+			<value description="addressto">Krakow zbójnicka 4</value>
+			<value description="body">3</value>
+			<value description="cargoprice">1000</value>
+			<value description="cargoonpallette">true</value>
+			<value description="cargoondelivery">true</value>
+			<value description="submissiondate">2009-03-13</value>
+			<value description="cityfrom">opole</value>
+			<value description="cityto">kraków</value>
+			<value description="countryfrom">pl</value>
+			<value description="countryto">pl</value>
+			<value description="deliveryonday">2009-03-13</value>
+			<value description="description">2009-03-13</value>
+			<value description="dimensionofpalettes">100</value>
+			<value description="elevator">true</value>
+			<value description="hds">true</value>
+			<value description="length">200</value>
+			<value description="load">33</value>
+			<value description="loadingdate">2009-03-13</value>
+			<value description="negotiable">true</value>
+			<value description="loadingdate">2009-03-13</value>
+			<value description="numberofpalettes">6</value>
+			<value description="offervalid">2009-03-13</value>
+			<value description="otherdelivery">dddddd</value>
+			<value description="partload">true</value>
+			<value description="postofficefrom">45516</value>
+			<value description="postofficeto">01611</value>
+			<value description="readytoload">true</value>
+			<value description="stackablepallettes">true</value>
+			<value description="unloadingdate">2009-03-13</value>
+			<value description="volume">500</value>
+			<value description="weight">25</value>
+			<value description="contact">23</value>
+			<value description="owner">a</value>	
+        </row>
+        <row>
+			<value description="addressfrom">Opole lokietka 3</value>
+			<value description="addressto">Krakow zbójnicka 4</value>
+			<value description="body">3</value>
+			<value description="cargoprice">1000</value>
+			<value description="cargoonpallette">true</value>
+			<value description="cargoondelivery">true</value>
+			<value description="submissiondate">2009-03-13</value>
+			<value description="cityfrom">opole</value>
+			<value description="cityto">kraków</value>
+			<value description="countryfrom">pl</value>
+			<value description="countryto">pl</value>
+			<value description="deliveryonday">2009-03-13</value>
+			<value description="description">2009-03-13</value>
+			<value description="dimensionofpalettes">100</value>
+			<value description="elevator">true</value>
+			<value description="hds">true</value>
+			<value description="length">200</value>
+			<value description="load">33</value>
+			<value description="loadingdate">2009-03-13</value>
+			<value description="negotiable">true</value>
+			<value description="loadingdate">2009-03-13</value>
+			<value description="numberofpalettes">6</value>
+			<value description="offervalid">2009-03-13</value>
+			<value description="otherdelivery">dddddd</value>
+			<value description="partload">true</value>
+			<value description="postofficefrom">45516</value>
+			<value description="postofficeto">01611</value>
+			<value description="readytoload">true</value>
+			<value description="stackablepallettes">true</value>
+			<value description="unloadingdate">2009-03-13</value>
+			<value description="volume">500</value>
+			<value description="weight">25</value>
+			<value description="contact">23</value>
+			<value description="owner">a</value>        </row>
+    </table>
+    <table name="body">
+        <column>name</column>
+        <row>
+            <value description="name">Plandeka</value>
+        </row>
+        <row>
+            <value description="name">Izoterma</value>
+        </row>
+        <row>
+            <value description="name">Platforma</value>
+        </row>
+        <row>
+            <value description="name">Wywrotka</value>
+        </row>
+        <row>
+            <value description="name">Jumbo</value>
+        </row>
+        <row>
+            <value description="name">Chłodnia</value>
+        </row>
+        <row>
+            <value description="name">Firanka</value>
+        </row>
+        <row>
+            <value description="name">Cysterna</value>
+        </row>
+        <row>
+            <value description="name">Silos</value>
+        </row>
+        <row>
+            <value description="name">Meblowóz</value>
+        </row>
+        <row>
+            <value description="name">Kontener</value>
+        </row>
+        <row>
+            <value description="name">Zestaw</value>
+        </row>
+        <row>
+            <value description="name">Bus</value>
+        </row>
+        <row>
+            <value description="name">Laweta</value>
+        </row>
+        <row>
+            <value description="name">Mega</value>
+        </row>
+        <row>
+            <value description="name">Coilmulde</value>
+        </row>
+        <row>
+            <value description="name">Inne</value>
+        </row>
+
+    </table>
+    <table name="favouriteoffer">
+        <column>offerid</column>
+        <column>username</column>
+        <row>
+            <value description="offerid">1</value>
+            <value description="username">a</value>
+        </row>
+        <row>
+            <value description="user_id">2</value>
+            <value description="role_id">a</value>
+        </row>
+    </table>
+	<table name="acceptedoffer">
+        <column>offerid</column>
+        <column>username</column>
+        <row>
+            <value description="offerid">1</value>
+            <value description="username">a</value>
+        </row>
+        <row>
+            <value description="user_id">2</value>
+            <value description="role_id">a</value>
+        </row>
+    </table>
+	<table name="endedoffer">
+        <column>offerid</column>
+        <column>username</column>
+        <row>
+            <value description="offerid">1</value>
+            <value description="username">a</value>
+        </row>
+        <row>
+            <value description="user_id">2</value>
+            <value description="role_id">a</value>
+        </row>
+    </table>
+
+</dataset>

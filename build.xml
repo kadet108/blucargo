@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="blucargo"  basedir=".">
+
+	<!-- === PROPERTIES === -->
+	<property environment="env" />
+	<property file="build.properties" />
+	
+	<target name="maven-execute" description="do mvn with clean and install">
+		<exec dir="${cargotrans_data}" executable="mvn">
+		<arg value="clean"/>
+		<arg value="install"/>
+		</exec>
+		<copy file="${SNAPSHOT.data}" todir="${SNAPSHOT.openfire}"/>
+		<copy file="${SNAPSHOT.data}" todir="${SNAPSHOT.spark}"/>
+	</target>
+	
+	<target name="sql-dumb" description="dumb mysql and write file">
+		<input message="please enter user:    "   addproperty="User" />
+		<input message="please enter password: 		"   addproperty="Password" />
+		<input message="please enter database: 		"   addproperty="Database" />
+
+		<exec dir="${cargotrans_data}" command="mysqldump -u${User} -hlocalhost -p${Password} ${Database} -r ${mysqldump}"/>	
+	</target>
+</project>

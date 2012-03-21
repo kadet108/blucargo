@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    version="1.0">
+	<persistence-unit name="test" transaction-type="RESOURCE_LOCAL">
+	    <provider>
+            org.apache.openjpa.persistence.PersistenceProviderImpl
+        </provider>
+		<class>com.blucargo.model.AcceptedOffer</class>
+		<class>com.blucargo.model.CarBody</class>
+		<class>com.blucargo.model.CargoOffer</class>
+		<class>com.blucargo.model.Country</class>
+		<class>com.blucargo.model.City</class>
+		<class>com.blucargo.model.Comment</class>
+		<class>com.blucargo.model.SearchCriteria</class>
+		<class>com.blucargo.model.EndedOffer</class>
+		<class>com.blucargo.model.FavouriteOffer</class>
+		<class>com.blucargo.model.OfferAcceptance</class>
+		<class>com.blucargo.model.CommentAndOffer</class>
+		<class>com.blucargo.model.RegistrationData</class>
+		<properties>
+				<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema"/>
+				<property name="openjpa.ConnectionURL" value="jdbc:hsqldb:mem:DBNAME"/>
+				<property name="openjpa.ConnectionDriverName" value="org.hsqldb.jdbcDriver"/>
+				<property name="openjpa.ConnectionUserName" value="${test.jdbc.username}"/>
+				<property name="openjpa.ConnectionPassword" value="${test.jdbc.password}"/>
+		</properties>
+	</persistence-unit>
+    <persistence-unit name="main" transaction-type="RESOURCE_LOCAL">
+	    <provider>
+            org.apache.openjpa.persistence.PersistenceProviderImpl
+        </provider>
+		<class>com.blucargo.model.AcceptedOffer</class>
+		<class>com.blucargo.model.CarBody</class>
+		<class>com.blucargo.model.CargoOffer</class>
+		<class>com.blucargo.model.Country</class>
+		<class>com.blucargo.model.City</class>
+		<class>com.blucargo.model.SearchCriteria</class>
+		<class>com.blucargo.model.Comment</class>
+		<class>com.blucargo.model.EndedOffer</class>
+		<class>com.blucargo.model.FavouriteOffer</class>
+		<class>com.blucargo.model.OfferAcceptance</class>
+		<class>com.blucargo.model.CommentAndOffer</class>
+		<class>com.blucargo.model.RegistrationData</class>
+		<properties>
+				<property name="openjpa.ConnectionURL" value="jdbc:mysql://localhost:3306/cargo"/>
+				<property name="openjpa.ConnectionDriverName" value="com.mysql.jdbc.Driver"/>
+				<property name="openjpa.ConnectionUserName" value="${jdbc.username}"/>
+				<property name="openjpa.ConnectionPassword" value="${jdbc.password}"/>
+				<property name="openjpa.jdbc.DBDictionary" value="mysql(UseClobs=true)"/>
+		</properties>
+    </persistence-unit>
+    <persistence-unit name="create_schema" transaction-type="RESOURCE_LOCAL">
+	    <provider>
+            org.apache.openjpa.persistence.PersistenceProviderImpl
+        </provider>
+		<class>com.blucargo.model.AcceptedOffer</class>
+		<class>com.blucargo.model.CarBody</class>
+		<class>com.blucargo.model.CargoOffer</class>
+		<class>com.blucargo.model.Country</class>
+		<class>com.blucargo.model.City</class>
+		<class>com.blucargo.model.SearchCriteria</class>
+		<class>com.blucargo.model.Comment</class>
+		<class>com.blucargo.model.EndedOffer</class>
+		<class>com.blucargo.model.FavouriteOffer</class>
+		<class>com.blucargo.model.OfferAcceptance</class>
+		<class>com.blucargo.model.CommentAndOffer</class>
+		<class>com.blucargo.model.RegistrationData</class>
+		<properties>
+				<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(SchemaAction='add,deleteTableContents')"/>
+				<property name="openjpa.ConnectionURL" value="jdbc:mysql://localhost:3306/cargo"/>
+				<property name="openjpa.ConnectionDriverName" value="com.mysql.jdbc.Driver"/>
+				<property name="openjpa.ConnectionUserName" value="${jdbc.username}"/>
+				<property name="openjpa.ConnectionPassword" value="${jdbc.password}"/>
+				<property name="openjpa.jdbc.DBDictionary" value="mysql(UseClobs=true)"/>
+		</properties>
+    </persistence-unit>    
+	<persistence-unit name="test" transaction-type="RESOURCE_LOCAL">
+	    <provider>
+            org.apache.openjpa.persistence.PersistenceProviderImpl
+        </provider>
+		<class>com.blucargo.model.AcceptedOffer</class>
+		<class>com.blucargo.model.CarBody</class>
+		<class>com.blucargo.model.CargoOffer</class>
+		<class>com.blucargo.model.Country</class>
+		<class>com.blucargo.model.City</class>
+		<class>com.blucargo.model.Comment</class>
+		<class>com.blucargo.model.SearchCriteria</class>
+		<class>com.blucargo.model.EndedOffer</class>
+		<class>com.blucargo.model.FavouriteOffer</class>
+		<class>com.blucargo.model.OfferAcceptance</class>
+		<class>com.blucargo.model.CommentAndOffer</class>
+		<class>com.blucargo.model.RegistrationData</class>
+		<properties>
+				<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema"/>
+				<property name="openjpa.ConnectionURL" value="jdbc:hsqldb:mem:DBNAME"/>
+				<property name="openjpa.ConnectionDriverName" value="org.hsqldb.jdbcDriver"/>
+				<property name="openjpa.ConnectionUserName" value="${test.jdbc.username}"/>
+				<property name="openjpa.ConnectionPassword" value="${test.jdbc.password}"/>
+		</properties>
+    </persistence-unit>
+</persistence>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Plugin configuration for the broadcast plugin.
+-->
+<plugin>
+    <class>com.blucargo.BlucargoPlugin</class>
+    <name>Blucargo</name>
+    <description>Blucargo plugin</description>
+    <author>Krzysztof Dziadek</author>
+    <version>0.1</version>
+    <date>28/03/2010</date>
+    <url>blucargo</url>
+    <minServerVersion>3.4.1</minServerVersion>
+</plugin>

@@ -1,0 +1,643 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.blucargo</groupId>
+  <artifactId>blucargo_data</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>blucargo_data</name>
+  <url>http://maven.apache.org</url>
+  
+  <repositories>
+	  <repository>
+		  <id>guice-maven</id> 
+		  <name>guice maven</name> 
+		  <url>http://guice-maven.googlecode.com/svn/trunk</url> 
+	  </repository>
+	  
+  </repositories>
+
+  
+  <build>
+    <plugins>
+	
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+	  
+	  <plugin>
+		<groupId>org.codehaus.mojo</groupId>
+		<artifactId>openjpa-maven-plugin</artifactId>
+		<version>1.2</version>
+		<configuration>
+		  <includes>com/blucargo/model/**/*.class</includes>
+		  <addDefaultConstructor>true</addDefaultConstructor>
+		  <enforcePropertyRestrictions>true</enforcePropertyRestrictions>
+			<sqlAction>build</sqlAction>    
+			<sqlFile>target/tables.sql</sqlFile> 
+		</configuration>
+		<executions>
+		  <execution>
+			<id>enhancer</id>
+			<phase>process-classes</phase>
+			<goals>
+			  <goal>enhance</goal>
+			</goals>
+		  </execution>
+		  <execution>
+			<id>create_sql</id>
+			<phase>process-classes</phase>
+			<goals>
+			  <goal>sql</goal>
+			</goals>
+		  </execution>
+		</executions>
+	  </plugin>
+	
+	  <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.5</version>
+        <executions>
+          <execution>
+            <id>copy-resources2</id>
+            <phase>install</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${blucargo_spark}/target/build/lib/</outputDirectory>
+              <resources>          
+                <resource>
+                  <directory>target</directory>
+					<includes>
+					  <include>blucargo_data-1.0-SNAPSHOT.jar</include>
+					</includes>
+				</resource>
+              </resources>              
+            </configuration>            
+          </execution>
+          <execution>
+            <id>copy-resources1</id>
+            <phase>install</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${blucargo_openfire}/src/plugins/blucargo/lib/</outputDirectory>
+              <resources>          
+                <resource>
+                  <directory>target</directory>
+					<includes>
+					  <include>blucargo_data-1.0-SNAPSHOT.jar</include>
+					</includes>
+				</resource>
+              </resources>              
+            </configuration>            
+          </execution>
+        </executions>
+      </plugin>
+	  
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>sql-maven-plugin</artifactId>
+			<version>1.4</version>
+
+			<dependencies>
+				<!-- specify the dependent jdbc driver here -->
+				<dependency>
+					<groupId>${jdbc.groupId}</groupId>
+					<artifactId>${jdbc.artifactId}</artifactId>
+					<version>${jdbc.version}</version>
+				</dependency>
+			</dependencies>
+
+			<!-- common configuration shared by all executions -->
+			<configuration>
+				<driver>${jdbc.driverClassName}</driver>
+				<url>${jdbc.url}</url>
+				<username>${jdbc.username}</username>
+				<password>${jdbc.password}</password>
+				<skip>${maven.test.skip}</skip>
+			</configuration>
+
+			<executions>
+					    
+						<!-- Aby to odpalic trzeba wpisac mvn sql:execute -->
+						<execution>
+							<id>default-cli</id>
+							<configuration>
+								<url>${jdbc.url}</url>
+								<autocommit>false</autocommit>
+								<srcFiles>
+									<srcFile>src/main/db/city.sql</srcFile>
+								</srcFiles>
+								<sqlCommand>commit</sqlCommand>
+								<onError>continue</onError>
+							</configuration>
+						</execution>
+
+						<!-- przy kazdym odpalaniu mavena zaladuje sie nowa bazka-->
+						<execution>
+						    <id>insert_data</id>
+							<phase>process-classes</phase>
+							<goals>
+							   <goal>execute</goal>
+							</goals>
+							
+							<configuration>
+								<skip>${skip.refresh.database}</skip>
+								<url>${jdbc.url}</url>
+								<autocommit>true</autocommit>
+								<srcFiles>
+									<srcFile>src/main/db/create_cargo_scheme.sql</srcFile>
+									<srcFile>target/tables.sql</srcFile>
+									<srcFile>src/main/db/inserts.sql</srcFile>
+									<srcFile>src/main/db/addicional.sql</srcFile>
+								</srcFiles>
+								<onError>continue</onError>
+							</configuration>
+						</execution>
+
+						<!-- przy kazdym odpalaniu mavena zaladuje sie nowa bazka-->
+						<execution>
+						    <id>load city</id>
+							<phase>process-classes</phase>
+							<goals>
+							   <goal>execute</goal>
+							</goals>
+							
+							<configuration>
+								<skip>${skip.refresh.database}</skip>
+								<url>${jdbc.url}</url>
+								<autocommit>true</autocommit>
+								<sqlCommand>LOAD DATA LOCAL INFILE 'src/main/db/city.csv' INTO TABLE city;</sqlCommand>
+								<onError>continue</onError>
+							</configuration>
+						</execution>
+						
+					</executions>
+			</plugin>
+
+      <plugin>
+               <groupId>org.codehaus.mojo</groupId>
+               <artifactId>exec-maven-plugin</artifactId>
+               <version>1.1</version>
+				<executions>
+				  <execution>
+					<id>exec</id>
+					<phase>process-classes</phase>
+					<goals>
+					  <goal>java</goal>
+					</goals>
+				  </execution>
+				</executions>
+				<configuration>
+				  <mainClass>com.blucargo.model.init.GetCountriesAndCitiesFromDatabaseAndSaveThemToFile</mainClass>
+				</configuration>
+  		    </plugin>
+
+       </plugins>
+	   
+	<pluginManagement>
+		<plugins>
+			 <plugin>
+				  <groupId>org.eclipse.m2e</groupId>
+				  <artifactId>lifecycle-mapping</artifactId>
+				  <version>1.0.0</version>
+				  <configuration>
+					<lifecycleMappingMetadata>
+					  <pluginExecutions>
+						<pluginExecution>
+						  <pluginExecutionFilter>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>exec-maven-plugin</artifactId>
+							<versionRange>[1.0.0,)</versionRange>
+							<goals>
+								<goal>java</goal>
+							</goals>
+						  </pluginExecutionFilter>
+						  <action>
+							    <execute >
+									<runOnIncremental>false</runOnIncremental>
+								</execute >
+						  </action>
+						</pluginExecution>
+						<pluginExecution>
+						  <pluginExecutionFilter>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>openjpa-maven-plugin</artifactId>
+							<versionRange>[1.0.0,)</versionRange>
+							<goals>
+								<goal>enhance</goal>
+								<goal>sql</goal>
+							</goals>
+						  </pluginExecutionFilter>
+						  <action>
+							    <execute >
+									<runOnIncremental>false</runOnIncremental>
+								</execute >
+						  </action>
+						</pluginExecution>
+						<pluginExecution>
+						  <pluginExecutionFilter>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>sql-maven-plugin</artifactId>
+							<versionRange>[1.0.0,)</versionRange>
+							<goals>
+								<goal>execute</goal>
+							</goals>
+						  </pluginExecutionFilter>
+						  <action>
+							    <execute >
+									<runOnIncremental>false</runOnIncremental>
+								</execute >
+						  </action>
+						</pluginExecution>
+					  </pluginExecutions>
+					</lifecycleMappingMetadata>
+				  </configuration>
+			</plugin>
+		</plugins>	
+	</pluginManagement>
+
+    <resources>
+      <resource>
+        <directory>src/main/resources/</directory>
+        <filtering>true</filtering>
+      </resource>
+      <resource>
+        <directory>src/main/data/</directory>
+        <includes>
+          <include> **/*.ser </include>
+        </includes>        
+		<filtering>false</filtering>
+      </resource>
+    </resources>
+  </build>
+  
+  <dependencies>
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+    </dependency>
+	<dependency>
+        <groupId>org.apache.openjpa</groupId>
+        <artifactId>openjpa-all</artifactId>
+        <version>2.0.0</version>
+    </dependency>	
+	<dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>5.1.17</version>
+	</dependency>
+	<dependency>
+		<groupId>com.google.code.guice</groupId>
+        <artifactId>guice</artifactId>
+        <version>2.0.1</version>
+    </dependency>
+	<dependency>
+        <groupId>com.wideplay.warp</groupId>
+        <artifactId>persist</artifactId>
+        <version>2.0</version>
+    </dependency>
+<!--	<dependency>
+        <groupId>org.constretto</groupId>
+        <artifactId>constretto-api</artifactId>
+        <version>1.0</version>
+    </dependency>
+    <dependency>
+         <groupId>org.constretto</groupId>
+         <artifactId>constretto-core</artifactId>
+         <version>1.0</version>
+     </dependency> -->
+     <dependency>
+         <groupId>org.mockito</groupId>
+         <artifactId>mockito-all</artifactId>
+         <version>1.8.1</version>
+     </dependency>
+	 <dependency>
+         <groupId>aopalliance</groupId>
+         <artifactId>aopalliance</artifactId>
+         <version>1.0</version>
+     </dependency>
+	 <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-core</artifactId>
+     </dependency>
+
+     <dependency>
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-core</artifactId>
+     </dependency>
+
+     <dependency>
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-web</artifactId>
+     </dependency>
+
+     <dependency>
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-config</artifactId>
+     </dependency>
+	 
+	 <dependency>
+		<groupId>hsqldb</groupId>
+		<artifactId>hsqldb</artifactId>
+		<version>1.8.0.1</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>log4j</groupId>
+		<artifactId>log4j</artifactId>
+		<version>1.2.16</version>
+	</dependency>
+	
+    <dependency>
+        <groupId>joda-time</groupId>
+        <artifactId>joda-time</artifactId>
+        <version>1.6</version>
+    </dependency>
+	
+    <dependency>
+		<groupId>joda-time</groupId>
+		<artifactId>joda-time-jsptags</artifactId>
+		<version>1.0.2</version>
+    </dependency>
+
+    <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time-hibernate</artifactId>
+            <version>1.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate</artifactId>
+                </exclusion>
+            </exclusions>
+    </dependency>
+			
+			
+	<dependency>
+			<groupId>org.dbunit</groupId>
+			<artifactId>dbunit</artifactId>
+			<version>2.4.4</version>
+	</dependency>	
+	
+	<dependency>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>dbunit-maven-plugin</artifactId>
+			<version>1.0-beta-3</version>
+	</dependency>
+	
+  </dependencies>
+  
+   <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.8.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>2.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jul-to-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>3.3.2.GA</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-annotations</artifactId>
+                <version>3.4.0.GA</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-c3p0</artifactId>
+                <version>3.3.2.GA</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>ejb3-persistence</artifactId>
+                <version>1.0.2.GA</version>
+            </dependency>
+
+            <dependency>
+                <groupId>jboss</groupId>
+                <artifactId>javassist</artifactId>
+                <version>3.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mysema.querydsl</groupId>
+                <artifactId>querydsl-core</artifactId>
+                <version>1.3.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mysema.querydsl</groupId>
+                <artifactId>querydsl-apt</artifactId>
+                <version>1.3.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mysema.querydsl</groupId>
+                <artifactId>querydsl-hql</artifactId>
+                <version>1.3.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>antlr</groupId>
+                <artifactId>antlr</artifactId>
+                <version>2.7.7</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cglib</groupId>
+                <artifactId>cglib</artifactId>
+                <version>2.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>asm</groupId>
+                <artifactId>asm</artifactId>
+                <version>3.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>8.4-701.jdbc4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>hsqldb</groupId>
+                <artifactId>hsqldb</artifactId>
+                <version>1.8.0.10</version>
+            </dependency>
+
+            <dependency>
+                <groupId>axis</groupId>
+                <artifactId>axis</artifactId>
+                <version>1.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>axis</groupId>
+                <artifactId>axis-wsdl4j</artifactId>
+                <version>1.5.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.castor</groupId>
+                <artifactId>castor-xml</artifactId>
+                <version>1.3.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.castor</groupId>
+                <artifactId>castor-core</artifactId>
+                <version>1.3.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>woodstox</groupId>
+                <artifactId>wstx-asl</artifactId>
+                <version>3.2.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>xpp3</groupId>
+                <artifactId>xpp3</artifactId>
+                <version>1.1.3.3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+			
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>1.6</version>
+			</dependency>
+		
+			<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time-jsptags</artifactId>
+			<version>1.0.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time-hibernate</artifactId>
+				<version>1.2</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			
+			
+        </dependencies>
+    </dependencyManagement>
+  
+  
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jdk.source>1.6</jdk.source>
+        <jdk.target>1.6</jdk.target>
+        <slf4j.version>1.5.11</slf4j.version>
+        <servlet.version>2.5</servlet.version>
+        <jsp.version>2.0</jsp.version>
+        <velocity.version>1.5</velocity.version>
+        <velocitytools.version>1.3</velocitytools.version>
+        <struts.version>2.1.8.1</struts.version>
+        <guice.version>2.0.1</guice.version>
+        <solr.version>1.4.0</solr.version>
+        <spring.version>3.0.2.RELEASE</spring.version>
+        <db.name>portia</db.name>
+        <db.username>portia</db.username>
+        <db.password>em1port41</db.password>
+        <jersey.version>1.3</jersey.version>
+	
+	
+		<db.name>cargo</db.name>
+        <!-- Database settings -->
+        <dbunit.dataTypeFactoryName>org.dbunit.ext.mysql.MySqlDataTypeFactory</dbunit.dataTypeFactoryName>
+        <dbunit.operation.type>CLEAN_INSERT</dbunit.operation.type>
+        <hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</hibernate.dialect>
+        <jdbc.groupId>mysql</jdbc.groupId>
+        <jdbc.artifactId>mysql-connector-java</jdbc.artifactId>
+        <jdbc.version>5.1.10</jdbc.version>
+        <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
+        <jdbc.url>jdbc:mysql://localhost/${db.name}?createDatabaseIfNotExist=true&amp;amp;useUnicode=true&amp;amp;characterEncoding=utf-8</jdbc.url>
+        <jdbc.username>root</jdbc.username>
+        <jdbc.password></jdbc.password>
+     	<test.jdbc.username>sa</test.jdbc.username>
+	    <test.jdbc.password></test.jdbc.password>
+        <blucargo_openfire>../blucargo_openfire</blucargo_openfire>
+        <blucargo_spark>../blucargo_spark</blucargo_spark>
+        <blucargo.server.url>127.0.0.1</blucargo.server.url>
+		<skip.refresh.database>false</skip.refresh.database>
+
+	</properties>
+</project>
+
